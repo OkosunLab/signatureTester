@@ -1,0 +1,13 @@
+Package: signatureTester
+Type: Package
+Title: A collection of functions for the testing of gene expression signatures in Bulk RNAseq
+Version: 0.1.0
+Author: Findlay Bewicke-Copley
+Maintainer: Findlay Bewicke-Copley (f.copley@qmul.ac.uk)
+Description: A collection of functions for the testing of gene expression signatures in Bulk RNAseq
+    oTHER WORDS
+License: ORC
+Encoding: UTF-8
+LazyData: true
+Depends: Biobase, survival, survminer, ggplot2, magrittr, dplyr
+RoxygenNote: 7.2.3
