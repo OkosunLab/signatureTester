@@ -3,7 +3,7 @@ Type: Package
 Title: A collection of functions for the testing of gene expression signatures in Bulk RNAseq
 Version: 0.1.0
 Author: Findlay Bewicke-Copley
-Maintainer: Findlay Bewicke-Copley (f.copley@qmul.ac.uk)
+Maintainer: Findlay Bewicke-Copley <f.copley@qmul.ac.uk>
 Description: A collection of functions for the testing of gene expression signatures in Bulk RNAseq
     oTHER WORDS
 License: ORC
