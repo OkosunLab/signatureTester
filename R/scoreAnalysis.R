@@ -188,5 +188,5 @@ returnSigGeneExpression <- function(x, Signatures = NULL) {
 
 combineExprsSurv <- function(x, Signatures = NULL, TIME = "OS_Time", IND = "OS_IND") {
     left_join(t(returnSigGeneExpression(x, Signatures = Signatures)) %>% as.data.frame() %>% rownames_to_column("ID"),
-              returnPhenoColumns(MP_Signature_Pastore, Columns = c(TIME, IND)) %>% rownames_to_column("ID"))
+              returnPhenoColumns(x, Columns = c(TIME, IND)) %>% rownames_to_column("ID"))
 }
