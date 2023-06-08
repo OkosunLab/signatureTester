@@ -31,12 +31,12 @@ setMethod("show", "signatureTester",
                          cat(
                              paste("\n\tSignatures:", length(object@signatures)),
                              paste("\n\t\t", names(object@signatures))),
-                         "\n\tno signatures stored")
+                         "\n\tno signatures stored"),
                   ifelse(!is.null(object@scores),
                          cat(
                              paste("\n\tScores:", length(object@scores)),
                              paste("\n\t\t", names(object@scores))),
-                         "\n\tno signatures stored"))
+                         "\n\tno scores stored"))
               }
               )
 
