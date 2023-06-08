@@ -197,7 +197,7 @@ combineExprsSurv <- function(x, Signatures = NULL, TIME = "OS_Time", IND = "OS_I
 #' @title combinePhenoGroup
 #' @param x an object of class signatureTester
 #' @keywords expression testing signatures
-#' @export combineExprsSurv
+#' @export combinePhenoGroup
 #' @returns a dataframe of the phenodata from the eSet and the signature groups
 #' @examples
 #' combinePhenoGroup(x = object)
