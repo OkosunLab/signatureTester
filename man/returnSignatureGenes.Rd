@@ -12,7 +12,7 @@ returnSignatureGenes(x, Signatures = NULL)
 \item{signatures}{a vector of the signatures to return (default = NULL)}
 }
 \value{
-a boxplot of the scores across the groups in each signature
+a list of the genes in the specified signatures
 }
 \description{
 Function for returning the genes in the specified signatures

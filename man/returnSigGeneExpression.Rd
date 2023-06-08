@@ -12,7 +12,7 @@ returnSigGeneExpression(x, Signatures = NULL)
 \item{signatures}{a vector of the signatures to return (default = NULL)}
 }
 \value{
-a boxplot of the scores across the groups in each signature
+The gene expression values for the genes in the specified signatures
 }
 \description{
 Function for returning the gene expression of genes in the specified signatures

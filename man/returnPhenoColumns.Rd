@@ -12,7 +12,7 @@ returnPhenoColumns(x, Columns = NULL)
 \item{columns}{a vector of the columns to return (default = NULL)}
 }
 \value{
-a boxplot of the scores across the groups in each signature
+a data frame of the specified columns from the pData of the eSet
 }
 \description{
 Function for returning columns from the expression set phenotype data

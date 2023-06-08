@@ -27,13 +27,20 @@ setMethod("show", "signatureTester",
                   "\n\tsamples:",
                   ncol(object@Expression),
                   "\nSignatures:",
-                  ifelse(!is.null(object@signatures),
-                         paste("\n\tSignatures:", length(object@signatures)),
+                  if (!is.null(object@signatures)) {
+                      paste("\n\tSignatures:", length(object@signatures))
+                      paste("\n\t\t", names(object@signatures))
+                      } else {
                          "\n\tno signatures stored"
-                  ))
-
-          }
-)
+                      }
+                  if (!is.null(object@scores)) {
+                      paste("\n\tScores:", length(object@scores))
+                      paste("\n\t\t", names(object@scores))
+                  } else {
+                      "\n\tno signatures stored"
+                  })
+              }
+              )
 
 #' Function for building the class from an eSet
 #'

@@ -16,7 +16,7 @@ combineExprsSurv(x, Signatures = NULL, TIME = "OS_Time", IND = "OS_IND")
 \item{signatures}{a vector of the signatures to return (default = NULL)}
 }
 \value{
-a boxplot of the scores across the groups in each signature
+The gene expression for the genes in the signatures along with the TIME and IND for survival analysis
 }
 \description{
 Function for returning the gene expression along with survival stats
