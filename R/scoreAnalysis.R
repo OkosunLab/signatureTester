@@ -28,7 +28,7 @@ scaleScores <- function(x) {
 #' @examples
 #' thresholdScores(x = object, method = "ntile", n = 2)
 
-thresholdScores <- function(x, method = "ntile", n = 2) {
+thresholdScores <- function(x, method = "ntile", n = 2, thres = NULL) {
     if (method == "ntile") {
         x@assignments$groups <- apply(x@scores, 2, function(col) {
             ntile(col, n)}) %>%
@@ -36,7 +36,12 @@ thresholdScores <- function(x, method = "ntile", n = 2) {
             mutate(Mixture = rownames(x@scores)) %>%
             column_to_rownames("Mixture")
     } else if (method == "mean") {
-
+        x@assignments$groups <- apply(x@scores, 2, function(col) {
+            ifelse(col > mean(col), "high" , "low" ) %>%
+            as.data.frame() %>%
+            mutate(Mixture = rownames(x@scores)) %>%
+            column_to_rownames("Mixture")
+    })
     }
     x
 }

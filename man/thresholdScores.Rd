@@ -4,7 +4,7 @@
 \alias{thresholdScores}
 \title{thresholdScores}
 \usage{
-thresholdScores(x, method = "ntile", n = 2)
+thresholdScores(x, method = "ntile", n = 2, thres = NULL)
 }
 \arguments{
 \item{x}{an object of class signatureTester}
