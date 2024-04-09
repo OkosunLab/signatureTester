@@ -313,7 +313,7 @@ SummariseScores <- function(x, ...) {
 
 
 plotScoreDistribution <- function(x, ...) {
-    combineGroupsScores(MP_Signature_Pastore, ...) %>%
+    combineGroupsScores(x, ...) %>%
         ggplot(aes(x = Score)) +
         geom_histogram(fill = "grey") +
         geom_density() +
