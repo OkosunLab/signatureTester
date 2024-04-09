@@ -358,8 +358,10 @@ GetPlotDimensions <- function(plot, ...) {
 #' AnnotateScoreDistribution(x, plot)
 
 
-AnnotateScoreDistribution <- function(x, ...) {
-    plot <- plotScoreDistribution(MP_Signature_Pastore, ...)
+AnnotateScoreDistribution <- function(x, plot = NULL, ...) {
+    if (is.null(plot)) {
+    plot <- plotScoreDistribution(x, ...)
+    }
     Summaries <- SummariseScores(x, ...)
     Summaries <- GetPlotDimensions(plot, ...) %>%
         right_join(Summaries, ., by = "Signatures")

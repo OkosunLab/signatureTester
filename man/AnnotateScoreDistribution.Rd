@@ -4,7 +4,7 @@
 \alias{AnnotateScoreDistribution}
 \title{AnnotateScoreDistribution}
 \usage{
-AnnotateScoreDistribution(x, ...)
+AnnotateScoreDistribution(x, plot = NULL, ...)
 }
 \arguments{
 \item{x}{an object of class signatureTester}
