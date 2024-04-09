@@ -362,7 +362,7 @@ AnnotateScoreDistribution <- function(x, ...) {
     plot <- plotScoreDistribution(MP_Signature_Pastore, ...)
     Summaries <- SummariseScores(x, ...)
     Summaries <- GetPlotDimensions(plot, ...) %>%
-        right_join(ScoreSummaries, ., by = "Signatures")
+        right_join(Summaries, ., by = "Signatures")
     plot +
         geom_vline(
             data = pivot_longer(
