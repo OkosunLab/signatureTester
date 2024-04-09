@@ -15,7 +15,9 @@ signatureTester <- setClass("signatureTester",
                                 scores="data.frame",
                                 signatures="list",
                                 attributes = "list",
-                                assignments = "list"
+                                assignments = "list",
+                                summaries = "data.frame",
+                                misc = "list"
                             ))
 
 

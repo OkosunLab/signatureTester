@@ -21,7 +21,7 @@ calculateRatio(x, sig1, sig2, name = NULL)
 a boxplot of the scores across the groups in each signature
 }
 \description{
-Function for returning the gene expression along with survival stats
+Function for generating a ration of two scores
 }
 \details{
 This function compares the scores and the groups

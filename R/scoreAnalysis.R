@@ -57,11 +57,11 @@ thresholdScores <- function(x, method = "ntile", n = 2, thres = NULL) {
 #' @examples
 #' combineGroupsScores(x = object)
 
-combineGroupsScores <- function(x) {
-    left_join(x@assignments$groups %>%
+combineGroupsScores <- function(x, ...) {
+    right_join(x@assignments$groups %>%
                   rownames_to_column("ID") %>%
                   pivot_longer(-ID, names_to = "Signatures", values_to = "Group"),
-              x@scores %>%
+              returnScores(x, ...) %>%
                   rownames_to_column("ID") %>%
                   pivot_longer(-ID, names_to = "Signatures", values_to = "Score"))
 }
@@ -224,12 +224,12 @@ combinePhenoGroup <- function(x) {
 #' @examples
 #' combineExprsSurv(x = object)
 
-combinePhenoScore <- function(x) {
+combinePhenoScore <- function(x, ...) {
     left_join(pData(x@Expression) %>% rownames_to_column("ID"),
-              x@scores %>% rownames_to_column("ID"))
+              returnScores(x, ...) %>% rownames_to_column("ID"))
 }
 
-#' Function for returning the gene expression along with survival stats
+#' Function for generating a ration of two scores
 #'
 #' This function compares the scores and the groups
 #' @title calculateRatio
@@ -253,4 +253,143 @@ calculateRatio <- function(x, sig1, sig2, name = NULL) {
         x@scores[name] <- ratio
     }
     x
+}
+
+#' Function for returning the scores in the class
+#'
+#' This function returns the scores
+#' @title returnScores
+#' @param x an object of class signatureTester
+#' @param Signatures a vector of the signatures to return (default = NULL)
+#' @keywords expression testing signatures
+#' @export returnScores
+#' @returns a dataframe of the scores for the chosen signatures
+#' @examples
+#' returnScores(signatureClass)
+#' returnScores(signatureClass, Signatures = "Signature1")
+#' returnScores(signatureClass, Signatures = c("Signature1", "Signature2"))
+
+returnScores <- function(x, Signatures = NULL, ...) {
+    if (is.null(Signatures)) {
+        x@scores
+    } else {
+        select(x@scores, any_of(Signatures))
+    }
+}
+
+#' Function for returning the scores in the class
+#'
+#' This function returns the scores
+#' @title SummariseScores
+#' @param x an object of class signatureTester
+#' @keywords expression testing signatures
+#' @export SummariseScores
+#' @returns a dataframe of the score summaries
+#' @examples
+#' SummariseScores(signatureClass)
+#' SummariseScores(signatureClass, Signatures = "Signature1")
+
+SummariseScores <- function(x, ...) {
+    apply(returnScores(x, ...), 2, function(scores) {
+        cbind(
+            Mean = mean(scores),
+            quantile(scores) %>% t() %>% as.data.frame() %>%
+                setNames(c("Min", "Q1", "Median", "Q3", "Max")),
+            shapiro.p = shapiro.test(scores)$p.value
+        )
+    }) %>% bind_rows(.id = "Signatures")}
+
+#' Function for plotting the density of the scores
+#'
+#' This function plots the scores
+#' @title plotScoreDistribution
+#' @param x an object of class signatureTester
+#' @keywords expression testing signatures
+#' @export plotScoreDistribution
+#' @returns a ggplot object
+#' @examples
+#' plotScoreDistribution(signatureClass)
+#' plotScoreDistribution(signatureClass, Signatures = "Signature1")
+
+
+plotScoreDistribution <- function(x, ...) {
+    combineGroupsScores(MP_Signature_Pastore, ...) %>%
+        ggplot(aes(x = Score)) +
+        geom_histogram(fill = "grey") +
+        geom_density() +
+        facet_wrap(~ Signatures, scales = "free")
+}
+
+#' Function to extract the max x and y from a plot
+#'
+#' This function plots the scores
+#' @title GetPlotDimensions
+#' @param plot a ggplot object
+#' @keywords expression testing signatures
+#' @export GetPlotDimensions
+#' @returns a ggplot object
+#' @examples
+#' GetPlotDimensions(plot)
+
+GetPlotDimensions <- function(plot, ...) {
+    grob <- ggplot_build(plot)
+    rbind(grob[["data"]][[1]] %>% select(all_of(c(
+        "y", "x", "PANEL"
+    ))),
+    grob[["data"]][[2]] %>% select(all_of(c(
+        "y", "x", "PANEL"
+    )))) %>%
+        group_by(PANEL) %>%
+        summarise(MAXY = max(y), MAXX = max(x)) %>%
+        left_join(select(grob$layout$layout, all_of(c(
+            "PANEL", "Signatures"
+        ))), by = "PANEL")
+}
+
+#' Function to add summaries to the density plots
+#'
+#' This function annotates a summary plot
+#' @title AnnotateScoreDistribution
+#' @param x an object of class signatureTester
+#' @keywords expression testing signatures
+#' @export AnnotateScoreDistribution
+#' @returns a ggplot object
+#' @examples
+#' AnnotateScoreDistribution(x, plot)
+
+
+AnnotateScoreDistribution <- function(x, ...) {
+    plot <- plotScoreDistribution(MP_Signature_Pastore, ...)
+    Summaries <- SummariseScores(x, ...)
+    Summaries <- GetPlotDimensions(plot, ...) %>%
+        right_join(ScoreSummaries, ., by = "Signatures")
+    plot +
+        geom_vline(
+            data = pivot_longer(
+                Summaries,
+                c(Mean, Median, Q1, Q3),
+                names_to = "Summary",
+                values_to = "Value"
+            ),
+            aes(xintercept = Value, col = Summary),
+            linetype = "dashed"
+        ) +
+        geom_label(
+            data = Summaries,
+            inherit.aes = FALSE,
+            aes(
+                x = MAXX,
+                y = MAXY + 5,
+                label = paste("Shapiro Wilk p =", round(shapiro.p, 3))
+            ),
+            hjust = "right"
+        ) +
+        labs("x = Score", y = "Density") +
+        scale_colour_manual(values =
+                                c(
+                                    "Mean" = "firebrick3",
+                                    "Median" = "navy",
+                                    "Q1" = "grey30",
+                                    "Q3" = "grey30"
+                                ))
 }

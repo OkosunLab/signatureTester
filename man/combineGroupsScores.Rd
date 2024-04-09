@@ -4,7 +4,7 @@
 \alias{combineGroupsScores}
 \title{combineGroupsScores}
 \usage{
-combineGroupsScores(x)
+combineGroupsScores(x, ...)
 }
 \arguments{
 \item{x}{an object of class signatureTester}

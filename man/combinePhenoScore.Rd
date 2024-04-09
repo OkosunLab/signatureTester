@@ -4,7 +4,7 @@
 \alias{combinePhenoScore}
 \title{combinePhenoScore}
 \usage{
-combinePhenoScore(x)
+combinePhenoScore(x, ...)
 }
 \arguments{
 \item{x}{an object of class signatureTester}
